@@ -1,0 +1,97 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>Archetype Created Web Application</display-name>
+
+  <context-param>
+    <param-name>driver_name</param-name>
+    <param-value>com.mysql.jdbc.Driver</param-value>
+  </context-param>
+  
+  
+  <context-param>
+  	<param-name>user_name</param-name>
+  	<param-value>root</param-value>
+  </context-param>
+  
+  
+  <context-param>
+  	<param-name>database</param-name>
+  	 <param-value>test</param-value>
+  </context-param>
+  
+  
+  
+  <context-param>
+  	<param-name>password</param-name>
+  	<param-value>123456789</param-value>
+  </context-param>
+  
+  
+  
+  
+  
+  
+   <context-param>
+    <param-name>url</param-name>
+    <param-value>jdbc:mysql://localhost/</param-value>
+  </context-param>
+
+
+  <servlet>
+  	<servlet-name>Login</servlet-name>
+  	<display-name>Login</display-name>
+  	<description></description>
+  	<servlet-class>Login</servlet-class>
+  </servlet>
+  
+  <servlet>
+  	<servlet-name>Account</servlet-name>
+  	<display-name>Account</display-name>
+  	<description></description>
+  	<servlet-class>Account</servlet-class>
+  </servlet>
+  
+  <servlet>
+  	<servlet-name>Deposit</servlet-name>
+  	<display-name>Deposit</display-name>
+  	<description></description>
+  	<servlet-class>Deposit</servlet-class>
+  </servlet>
+  
+  <servlet>
+  	<servlet-name>Withdraw</servlet-name>
+  	<display-name>Withdraw</display-name>
+  	<description></description>
+  	<servlet-class>Withdraw</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>Transfer</servlet-name>
+  	<display-name>Transfer</display-name>
+  	<description></description>
+  	<servlet-class>Transfer</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>Login</servlet-name>
+  	<url-pattern>/Login</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>Account</servlet-name>
+  	<url-pattern>/Account</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>Deposit</servlet-name>
+  	<url-pattern>/Deposit</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>Withdraw</servlet-name>
+  	<url-pattern>/Withdraw</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>Transfer</servlet-name>
+  	<url-pattern>/Transfer</url-pattern>
+  </servlet-mapping>
+  
+</web-app>
