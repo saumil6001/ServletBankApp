@@ -23,7 +23,7 @@ public class Account extends HttpServlet {
 
 
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 
 		response.setContentType("text/html");

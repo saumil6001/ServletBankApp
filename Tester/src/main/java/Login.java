@@ -24,7 +24,7 @@ public class Login extends HttpServlet {
 	private String pwd = null;
 	private String user_name = null;
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		try {
@@ -78,7 +78,7 @@ public class Login extends HttpServlet {
 			throws IOException, ServletException {
 
 		String name = request.getParameter("q1");
-		int id = Integer.parseInt(request.getParameter("q2"));
+		String id = request.getParameter("q2");
 
 		try (PrintWriter out = response.getWriter();
 				Statement st = connnection.createStatement();
