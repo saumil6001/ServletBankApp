@@ -1,10 +1,5 @@
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -15,83 +10,63 @@ import javax.servlet.http.HttpSession;
 public class Account extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
+	
+	private HttpServletRequest request=null;
+	private HttpServletResponse response= null;
 	private HttpSession session = null;
-	private String username = null;
-	private Connection connnection = null;
+	private RequestDispatcher rd = null;
 	private PrintWriter out = null;
-	private Customer bank_customer = null;
 
-
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 
-		response.setContentType("text/html");
-		session = request.getSession(false);
-		out = response.getWriter();
-		bank_customer = (Customer) session.getAttribute("customer");
-		connnection = bank_customer.getConnnection();
-		username = bank_customer.getUsername();
-
-		if (session != null) {
-
-			String botton = request.getParameter("botton");
-
-			switch (botton) {
-
-			case "checkbalance":
-				checkbalnce(username);
-				break;
 		
-			case "deposit":
-				RequestDispatcher rd = request.getRequestDispatcher("DepositHTML.html");
-				rd.forward(request, response);
-				break;
+		this.request=request;
+		this.response=response;
+		response.setContentType("text/html");
+		session = request.getSession();
+		out = response.getWriter();
+		String botton = request.getParameter("botton");
 
-			case "withdraw":
-				rd = request.getRequestDispatcher("WithdrawHTML.html");
-				rd.forward(request, response);
-				break;
-			
-			case "transfer":
-				rd=request.getRequestDispatcher("TransferHTML.html");
-				rd.forward(request, response);
-				
-			default:
-				out.println("Something Went Wrong With Button");
-			}
-
+		
+		if (session == null) {
+			out.println("Please Login First");
+			rd = request.getRequestDispatcher("LoginHTML.html");
+			rd.include(request, response);
 		} else {
-			out.println("Problem With Seassion");
+			buttonClick(botton);
 		}
 
 	}
+	
+	
+	private void buttonClick(String botton) throws ServletException, IOException {
 
+		switch (botton) {
 
-	private void checkbalnce(String userName) {
+		case "checkbalance":
+			rd = request.getRequestDispatcher("BalanceInquiry");
+			rd.forward(request, response);
+			break;
+			
+		case "deposit":
+			rd = request.getRequestDispatcher("DepositHTML.html");
+			rd.forward(request, response);
+			break;
 
-		try (Statement st = connnection.createStatement();
-				ResultSet rt = st
-						.executeQuery("select customer_name,balance, account_id from bank_account where username='"
-								+ userName + "';")) {
+		case "withdraw":
+			rd = request.getRequestDispatcher("WithdrawHTML.html");
+			rd.forward(request, response);
+			break;
 
-			while (rt.next()) {
+		case "transfer":
+			rd = request.getRequestDispatcher("TransferHTML.html");
+			rd.forward(request, response);
 
-				String customer_name = rt.getString(1);
-				double balance = rt.getDouble(2);
-				int account_number = rt.getInt(3);
-
-				out.println("<html><h1 align='center'>" + "TD Bank" + "</h1></html>");
-				out.println("<html><body>" + "Customer Name :" + customer_name + "<br></body></html>");
-				out.println("<html><body>" + "Account Number :" + account_number + "<br></body></html>");
-				out.println("<html><body>" + "Balance :" + balance + "<br></body></html>");
-
-			}
-
-		} catch (SQLException e) { // TODO Auto-generated catch block
-			e.printStackTrace();
+		default:
+			out.println("Something Went Wrong With Button");
 		}
-
 	}
 
 }

@@ -1,72 +1,72 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
-
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-/**
- * Servlet implementation class Withdraw
- */
 public class Withdraw extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-	private HttpSession session = null;
-	private int account_number = -1;
-	private double balance = -1;
-	private Connection connnection = null;
-	private PrintWriter out = null;
-	private Customer bank_customer = null;
-	private double amount = 0;
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	private static final long serialVersionUID = 1L;
+	private HttpServletRequest request = null;
+	private HttpServletResponse response = null;
+	private HttpSession session = null;
+	private Customer customer = null;
+	private RequestDispatcher rd = null;
+	private PrintWriter out = null;
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		response.setContentType("text/html");
-		session = request.getSession(false);
+		this.request = request;
+		this.response = response;
+		session = request.getSession();
+		customer = (Customer) session.getAttribute("customer");
+		String withdraw_amount = request.getParameter("withdraw");
 		out = response.getWriter();
-		bank_customer = (Customer) session.getAttribute("customer");
-		account_number = bank_customer.getBank_account().getAccount_number();
-		balance = bank_customer.getBank_account().getBalance();
-		connnection = bank_customer.getConnnection();
-		amount = Double.parseDouble(request.getParameter("withdraw"));
 
-		withdraw(amount);
+		if (session == null || customer == null || withdraw_amount == null) {
+			out.println("Please Login ");
+			rd = request.getRequestDispatcher("LoginHTML.html");
+			rd.include(request, response);
+
+		} else {
+
+			double amount = Double.parseDouble(withdraw_amount);
+			withdraw(amount);
+
+		}
 
 	}
 
-	private void withdraw(double amount) {
+	private boolean withdraw(double amount) {
 
-		if (bank_customer.getBank_account().withdraw(amount)) {
+		if (customer.getBank_account().withdraw(amount)) {
+			try {
 
-			balance = bank_customer.getBank_account().getBalance();
+				request.getRequestDispatcher("HomePage").include(request, response);
+				out.println("Amount Withdraw Successful<br>");
+				out.println("New Balance : " + customer.getBank_account().getBalance());
+				return true;
 
-			try (Statement st = connnection.createStatement();) {
-
-				int rt = st.executeUpdate(
-						"UPDATE accounts SET balance = '" + balance + "'WHERE account_id='" + account_number + "';");
-
-				if (rt != 0) {
-					out.println("amount withdraw successful <br>");
-					out.println("Balance : " + balance);
-				} else {
-					out.println("Something Went wrong transection can not be completed ");
-				}
-
-			} catch (SQLException e) {
+			} catch (ServletException | IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+			try {
+				request.getRequestDispatcher("WithdrawHTML.html").include(request, response);
+				out.println("Something Went wrong: Transection can not be Completed ");
+			} catch (ServletException | IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
-		} else {
-			out.println("Something Went wrong: Transection can not be Completed ");
 		}
-
+		return false;
 	}
 
 }
