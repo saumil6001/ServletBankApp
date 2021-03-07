@@ -73,6 +73,24 @@
   	<description></description>
   	<servlet-class>Transfer</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>HomePage</servlet-name>
+  	<display-name>HomePage</display-name>
+  	<description></description>
+  	<servlet-class>HomePage</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>BalanceInquiry</servlet-name>
+  	<display-name>BalanceInquiry</display-name>
+  	<description></description>
+  	<servlet-class>BalanceInquiry</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>LogOut</servlet-name>
+  	<display-name>LogOut</display-name>
+  	<description></description>
+  	<servlet-class>LogOut</servlet-class>
+  </servlet>
   <servlet-mapping>
   	<servlet-name>Login</servlet-name>
   	<url-pattern>/Login</url-pattern>
@@ -92,6 +110,18 @@
   <servlet-mapping>
   	<servlet-name>Transfer</servlet-name>
   	<url-pattern>/Transfer</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>HomePage</servlet-name>
+  	<url-pattern>/HomePage</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>BalanceInquiry</servlet-name>
+  	<url-pattern>/BalanceInquiry</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>LogOut</servlet-name>
+  	<url-pattern>/LogOut</url-pattern>
   </servlet-mapping>
   
 </web-app>
